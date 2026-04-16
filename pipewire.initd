@@ -2,34 +2,31 @@
 
 description="PipeWire system-wide daemon"
 
-depend() {
-    need dbus
-}
+PIPEWIRE_ARGS="${PIPEWIRE_ARGS:-}"
 
 PIPEWIRE_RUNTIME_DIR=/run/pipewire
 XDG_RUNTIME_DIR=/run/pipewire
 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
 
 command=/usr/bin/pipewire
-command_args="${pipewire_args[@]}"
+command_args="${PIPEWIRE_ARGS}"
 command_background=yes
 command_user="root:audio"
 
 pidfile="${PIPEWIRE_RUNTIME_DIR}/pipewire.pid"
 
 depend() {
-  after udev dbus
-  use alsasound pulseaudio
+    need dbus
+    after udev dbus
+    use alsasound pulseaudio
 }
 
 start_pre() {
-  mkdir -p /run/pipewire/pule
-  chown -R root:audio /run/pipewire
+    umask 0027
+    checkpath --mode 0755 -d "${PIPEWIRE_RUNTIME_DIR}"
 
-  export PIPEWIRE_RUNTIME_DIR
-  export XDG_RUNTIME_DIR
-  export DBUS_SESSION_BUS_ADDRESS
-  
-  umask 0007
+    export PIPEWIRE_RUNTIME_DIR
+    export XDG_RUNTIME_DIR
+    export DBUS_SESSION_BUS_ADDRESS
 
 }

@@ -15,9 +15,10 @@ command=/usr/bin/pipewire-pulse
 command_background=yes
 command_user="root:audio"
 
-pidfile="${PIPEWIRE_RUNTIME_DIR}/pipewire.pid"
+pidfile="${PIPEWIRE_RUNTIME_DIR}/pipewire-pulse.pid"
 
 start_pre() {
+  checkpath --mode 0755 -d "${PIPEWIRE_RUNTIME_DIR}/pulse"
 
   export PIPEWIRE_RUNTIME_DIR
   export XDG_RUNTIME_DIR

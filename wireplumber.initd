@@ -16,7 +16,7 @@ command_args="-p main-systemwide"
 command_background=yes
 command_user="root:audio"
 
-pidfile="${PIPEWIRE_RUNTIME_DIR}/pipewire.pid"
+pidfile="${PIPEWIRE_RUNTIME_DIR}/wireplumber.pid"
 
 start_pre() {
 
