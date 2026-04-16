@@ -15,10 +15,13 @@ command=/usr/bin/wireplumber
 command_args="-p main-systemwide"
 command_background=yes
 
+supervisor="supervise-daemon"
+supervise_daemon_args="-g audio -u root"
+
 pidfile="${PIPEWIRE_RUNTIME_DIR}/wireplumber.pid"
 
 start_pre() {
-    umask 0027
+    umask 0007
     export PIPEWIRE_RUNTIME_DIR
     export XDG_RUNTIME_DIR
     export DBUS_SESSION_BUS_ADDRESS

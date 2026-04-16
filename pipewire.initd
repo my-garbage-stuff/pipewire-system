@@ -12,6 +12,9 @@ command=/usr/bin/pipewire
 command_args="${PIPEWIRE_ARGS}"
 command_background=yes
 
+supervisor="supervise-daemon"
+supervise_daemon_args="-g audio -u root"
+
 pidfile="${PIPEWIRE_RUNTIME_DIR}/pipewire.pid"
 
 depend() {
@@ -21,8 +24,8 @@ depend() {
 }
 
 start_pre() {
-    umask 0027
-    checkpath --mode 0755 -d "${PIPEWIRE_RUNTIME_DIR}"
+    umask 0007
+    checkpath --owner root:audio --mode 0755 -d "${PIPEWIRE_RUNTIME_DIR}"
 
     export PIPEWIRE_RUNTIME_DIR
     export XDG_RUNTIME_DIR
