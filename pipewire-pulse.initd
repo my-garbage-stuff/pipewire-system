@@ -13,17 +13,14 @@ DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
 
 command=/usr/bin/pipewire-pulse
 command_background=yes
-command_user="root:audio"
 
 pidfile="${PIPEWIRE_RUNTIME_DIR}/pipewire-pulse.pid"
 
 start_pre() {
-  checkpath --mode 0755 -d "${PIPEWIRE_RUNTIME_DIR}/pulse"
+    umask 0027
+    checkpath --mode 0755 -d "${PIPEWIRE_RUNTIME_DIR}/pulse"
 
-  export PIPEWIRE_RUNTIME_DIR
-  export XDG_RUNTIME_DIR
-  export DBUS_SESSION_BUS_ADDRESS
-  
-  umask 0007
-
+    export PIPEWIRE_RUNTIME_DIR
+    export XDG_RUNTIME_DIR
+    export DBUS_SESSION_BUS_ADDRESS
 }
