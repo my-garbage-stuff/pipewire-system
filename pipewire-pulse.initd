@@ -1,0 +1,28 @@
+#!/sbin/openrc-run
+
+description="PipeWire system-wide daemon (pipewire-pulse)"
+
+depend() {
+    need pipewire
+}
+
+PIPEWIRE_RUNTIME_DIR=/run/pipewire
+XDG_RUNTIME_DIR=/run/pipewire
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
+#WIREPLUMBER_DEBUG=4
+
+command=/usr/bin/pipewire-pulse
+command_background=yes
+command_user="root:audio"
+
+pidfile="${PIPEWIRE_RUNTIME_DIR}/pipewire.pid"
+
+start_pre() {
+
+  export PIPEWIRE_RUNTIME_DIR
+  export XDG_RUNTIME_DIR
+  export DBUS_SESSION_BUS_ADDRESS
+  
+  umask 0007
+
+}

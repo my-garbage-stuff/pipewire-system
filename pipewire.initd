@@ -1,0 +1,35 @@
+#!/sbin/openrc-run
+
+description="PipeWire system-wide daemon"
+
+depend() {
+    need dbus
+}
+
+PIPEWIRE_RUNTIME_DIR=/run/pipewire
+XDG_RUNTIME_DIR=/run/pipewire
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
+
+command=/usr/bin/pipewire
+command_args="${pipewire_args[@]}"
+command_background=yes
+command_user="root:audio"
+
+pidfile="${PIPEWIRE_RUNTIME_DIR}/pipewire.pid"
+
+depend() {
+  after udev dbus
+  use alsasound pulseaudio
+}
+
+start_pre() {
+  mkdir -p /run/pipewire/pule
+  chown -R root:audio /run/pipewire
+
+  export PIPEWIRE_RUNTIME_DIR
+  export XDG_RUNTIME_DIR
+  export DBUS_SESSION_BUS_ADDRESS
+  
+  umask 0007
+
+}
